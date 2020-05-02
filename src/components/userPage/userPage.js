@@ -7,8 +7,7 @@ const UserPage = () => {
   //google maps position
   const [position, setPosition] = React.useState({});
   const [error, setError] = React.useState(null);
-  const [garage, setGarage] = React.useState([]);
-  const [name, setName] = React.useState("");
+  const [location, setLocation] = React.useState({ loc: [], name: "" });
 
   //trigger coordinates
   const onChange = ({ coords }) => {
@@ -22,7 +21,8 @@ const UserPage = () => {
   const onError = (error) => {
     setError(error.message);
   };
-  let userPosition = [position.x, position.y];
+  // let userPosition = [position.x, position.y];
+  let userPosition = [39.775302, -86.169055];
 
   //dynamic geo location
   React.useEffect(() => {
@@ -34,17 +34,17 @@ const UserPage = () => {
     test();
     let watcher = geo.watchPosition(onChange, onError);
     return () => geo.clearWatch(watcher);
-  }, [garage]);
+  }, [location]);
 
   const user = useSelector((state) => state.realUser.name);
   const [bgColor, setBgColor] = React.useState("");
 
   //is user near by?
+
   const test = () => {
-    if (userPosition[(0, 1)] === garage[(0, 1)]) {
+    if (userPosition[(0, 1)] === location.loc[(0, 1)])
       console.log("arrived at location");
-      setBgColor("Blue");
-    }
+    setBgColor("Blue");
   };
 
   //parking lot/garage coordinate pairs
@@ -57,24 +57,22 @@ const UserPage = () => {
 
   //set to individual parking lots
   const setToGateway = () => {
-    setGarage(gateWay.loc);
     setBgColor("red");
-    setName(gateWay.name);
-    test();
+
+    setLocation(gateWay);
+    test(gateWay);
   };
 
   const setToLot71 = () => {
-    setGarage(lot71.loc);
     setBgColor("red");
-    setName(lot71.name);
-    test();
+    setLocation(lot71);
+    test(lot71);
   };
 
   const setToLot83 = () => {
-    setGarage(lot83.loc);
     setBgColor("red");
-    setName(lot83.name);
-    test();
+    setLocation(lot83);
+    test(lot83);
   };
 
   //render
@@ -95,10 +93,10 @@ const UserPage = () => {
           distanceToMouse={() => {}}
         >
           <Icon
-            lat={garage[0]}
-            lng={garage[1]}
+            lat={location.loc[0]}
+            lng={location.loc[1]}
             backgroundCol={bgColor}
-            name={name}
+            name={location.name}
           />
         </GoogleMapReact>
         <button onClick={() => setToGateway()}>To Gateway</button>

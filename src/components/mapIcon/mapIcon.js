@@ -12,8 +12,6 @@ function Icon(props) {
     color: "white",
   };
 
-  console.log(name);
-
   return (
     <div style={style}>
       <p style={nameStyle}>{name}</p>
