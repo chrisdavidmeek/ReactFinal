@@ -21,8 +21,8 @@ const UserPage = () => {
   const onError = (error) => {
     setError(error.message);
   };
-  // let userPosition = [position.x, position.y];
-  let userPosition = [39.775302, -86.169055];
+
+  let userPosition = [position.x, position.y];
 
   //dynamic geo location
   React.useEffect(() => {
@@ -37,14 +37,18 @@ const UserPage = () => {
   }, [location]);
 
   const user = useSelector((state) => state.realUser.name);
+
   const [bgColor, setBgColor] = React.useState("");
 
   //is user near by?
 
   const test = () => {
-    if (userPosition[(0, 1)] === location.loc[(0, 1)])
+    if (userPosition === location.loc) {
       console.log("arrived at location");
-    setBgColor("Blue");
+      console.log(userPosition);
+      console.log(location.loc);
+      setBgColor("Blue");
+    }
   };
 
   //parking lot/garage coordinate pairs
@@ -58,8 +62,8 @@ const UserPage = () => {
   //set to individual parking lots
   const setToGateway = () => {
     setBgColor("red");
-
     setLocation(gateWay);
+
     test(gateWay);
   };
 
